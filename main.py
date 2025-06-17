@@ -21,7 +21,10 @@ app.register_blueprint(inspection_bp, url_prefix='/api')
 app.register_blueprint(backup_bp, url_prefix='/api')
 
 # uncomment if you need to use database
-app.config['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///{os.path.join(os.path.dirname(__file__), 'database', 'app.db')}"
+# app.config['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///{os.path.join(os.path.dirname(__file__), 'database', 'app.db')}"
+# TODO: Replace with your actual PostgreSQL connection details
+# Make sure to install the psycopg2-binary or pg8000 library: pip install psycopg2-binary
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://USER:PASSWORD@HOST:PORT/DATABASE'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # Import inspection models to ensure they are registered
