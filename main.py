@@ -11,7 +11,7 @@ from src.routes.inspection import inspection_bp
 from src.routes.backup import backup_bp
 
 app = Flask(__name__, static_folder=os.path.join(os.path.dirname(__file__), 'static'))
-app.config['SECRET_KEY'] = 'asdf#FGSgvasgf$5$WGT'
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'dev_secret_key_۱۲۳۴۵')
 
 # Enable CORS for all routes
 CORS(app)
@@ -24,7 +24,7 @@ app.register_blueprint(backup_bp, url_prefix='/api')
 # app.config['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///{os.path.join(os.path.dirname(__file__), 'database', 'app.db')}"
 # TODO: Replace with your actual PostgreSQL connection details
 # Make sure to install the psycopg2-binary or pg8000 library: pip install psycopg2-binary
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://USER:PASSWORD@HOST:PORT/DATABASE'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'postgresql://USER:PASSWORD@HOST:PORT/DATABASE')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # Import inspection models to ensure they are registered
@@ -50,6 +50,6 @@ def serve(path):
         else:
             return "index.html not found", 404
 
-
+app.config['DEBUG'] = os.environ.get('FLASK_DEBUG', 'False').lower() == 'true'
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=app.config['DEBUG'])
